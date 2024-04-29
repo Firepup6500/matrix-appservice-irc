@@ -15,6 +15,7 @@ import QuickLRU from "quick-lru";
 import { Message } from "matrix-org-irc";
 import { trackChannelAndCreateRoom } from "../bridge/RoomCreation";
 import { PrivacyProtection } from "../irc/PrivacyProtection";
+import { DendriteHack } from "../DendriteHack";
 const NICK_USERID_CACHE_MAX = 512;
 const PM_POWERLEVEL_MATRIXUSER = 10;
 const PM_POWERLEVEL_IRCUSER = 100;
@@ -94,18 +95,6 @@ export class IrcHandler {
         this.mentionMode = config.mapIrcMentionsToMatrix || "on";
         this.getMetrics();
     }
-
-    /**
-     * Manipulates nicks into a state that dendrite will handle
-     * @param nick The nick to change
-     * @return A string that is the nick fixed for dendrite
-     */
-    private dendrite(nick: string): string {
-        let newNick = nick.lower();
-
-
-        return newNick;
-    }
     
     public onMatrixMemberEvent(event: {room_id: string; state_key: string; content: {membership: MatrixMembership}}) {
         const priv = this.roomIdToPrivateMember[event.room_id];
@@ -181,6 +170,7 @@ export class IrcHandler {
     ): Promise<MatrixRoom> {
         let remainingReties = PM_ROOM_CREATION_RETRIES;
         let response;
+        fromUserNick = DendriteHack(fromUserNick);
         do {
             try {
                 response = await this.ircBridge.getAppServiceBridge().getIntent(
