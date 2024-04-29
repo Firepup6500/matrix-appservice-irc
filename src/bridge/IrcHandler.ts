@@ -95,6 +95,15 @@ export class IrcHandler {
         this.getMetrics();
     }
 
+    /**
+     * Manipulates nicks into a state that dendrite will handle
+     * @param nick The nick to change
+     * @return A Promise which is resolved when the PM room has been created.
+     */
+    private dendrite(nick: string): string {
+
+    }
+    
     public onMatrixMemberEvent(event: {room_id: string; state_key: string; content: {membership: MatrixMembership}}) {
         const priv = this.roomIdToPrivateMember[event.room_id];
         if (!priv) {
@@ -149,7 +158,7 @@ export class IrcHandler {
             priv.membership = "invite";
         }
     }
-
+    
     /**
      * Create a new matrix PM room for an IRC user with nick `fromUserNick` and another
      * matrix user with user ID `toUserId`.
