@@ -98,10 +98,13 @@ export class IrcHandler {
     /**
      * Manipulates nicks into a state that dendrite will handle
      * @param nick The nick to change
-     * @return A Promise which is resolved when the PM room has been created.
+     * @return A string that is the nick fixed for dendrite
      */
     private dendrite(nick: string): string {
+        let newNick = nick.lower();
 
+
+        return newNick;
     }
     
     public onMatrixMemberEvent(event: {room_id: string; state_key: string; content: {membership: MatrixMembership}}) {
