@@ -16,6 +16,7 @@ limitations under the License.
 
 import { RemoteUser } from "matrix-appservice-bridge";
 import { IrcServer } from "../irc/IrcServer";
+import { DendriteHack } from "../DendriteHack";
 
 export class IrcUser extends RemoteUser {
 
@@ -36,23 +37,11 @@ export class IrcUser extends RemoteUser {
         username: string|null = null) {
         super(server.domain + "__@__" + nick, {
             domain: server.domain,
-            nick: this.dendrite(nick),
+            nick: DendriteHack(nick),
             isVirtual: Boolean(isVirtual),
             password: password || null,
             username: username || null
         });
-    }
-
-    /**
-     * Manipulates nicks into a state that dendrite will handle
-     * @param nick The nick to change
-     * @return A string that is the nick fixed for dendrite
-     */
-    private dendrite(nick: string): string {
-        let newNick = nick.lower();
-
-
-        return newNick;
     }
     
     getUsername(): string {
