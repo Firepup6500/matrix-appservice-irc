@@ -36,13 +36,25 @@ export class IrcUser extends RemoteUser {
         username: string|null = null) {
         super(server.domain + "__@__" + nick, {
             domain: server.domain,
-            nick: nick,
+            nick: this.dendrite(nick),
             isVirtual: Boolean(isVirtual),
             password: password || null,
             username: username || null
         });
     }
 
+    /**
+     * Manipulates nicks into a state that dendrite will handle
+     * @param nick The nick to change
+     * @return A string that is the nick fixed for dendrite
+     */
+    private dendrite(nick: string): string {
+        let newNick = nick.lower();
+
+
+        return newNick;
+    }
+    
     getUsername(): string {
         return this.get("username") as string;
     }
